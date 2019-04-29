@@ -10,7 +10,8 @@
 
 #include <iostream>
 #include "utils.h"
-#include <unistd.h>
+#include <thread>
+#include <atomic>
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -19,6 +20,8 @@
 
 #include "OperationReaderListenerImpl.h"
 #include "VideoTypeSupportImpl.h"
+
+
 
 using namespace DDS;
 using namespace Video;
@@ -29,6 +32,8 @@ inline int OperationSubscribe(DomainParticipant_var &dp);
 DomainParticipant_var create_participant(DomainParticipantFactory_var dpf, int domain_id);
 Topic_var create_frame_topic(DomainParticipant_var p);
 DataWriterQos getDWReliableQos(Publisher_var publisher);
+void notifyInput(std::atomic_bool* );
+void checkInput(std::atomic_bool* exist);
 
 int main(int argc, char *argv[]) {
 	try {
@@ -45,7 +50,7 @@ int main(int argc, char *argv[]) {
 
 		Topic_var topic = create_frame_topic(participant);
 
-		//�û�������Ϣ����
+		//订阅操作
 		OperationSubscribe(participant);
 		
 
@@ -82,10 +87,11 @@ int main(int argc, char *argv[]) {
 		Mat frame_;
 
 		Duration_t timeout = { 10, 0 };
-		int stop=0;
+		std::atomic_bool stop{ false };
 		int count = 0;
 		std::cout << "send!\n";
-		while (stop==0) {
+		notifyInput(&stop);
+		while (!stop) {
 			cap >> frame_;
 			frame.frame_id += 1;
 			setMatToFrame(frame_, frame);
@@ -98,8 +104,7 @@ int main(int argc, char *argv[]) {
 			}
 			count++;
 			std::cout<<"send:"<<count<<" size:"<<frame.cols*frame.rows*frame.channels<<std::endl;
-			usleep(20000);
-			//stop = kbhit();
+			msleep(20);
 		}
 		std::cout << "number of message sent :" << count << std::endl;
 
@@ -112,7 +117,6 @@ int main(int argc, char *argv[]) {
 		e._tao_print_exception("Exception caught in main():");
 		return -1;
 	}
-
 	return 0;
 }
 
@@ -212,4 +216,15 @@ DataWriterQos getDWReliableQos(Publisher_var publisher) {
 	dw_qos.resource_limits.max_samples = 100;
 	dw_qos.resource_limits.max_samples_per_instance = 50;
 	return dw_qos;
+}
+
+void notifyInput(std::atomic_bool* exist) {
+	std::thread t(checkInput, exist);
+	t.detach();
+}
+
+void checkInput(std::atomic_bool* exist) {
+	std::cin.seekg(std::cin.end);
+	std::cin.peek();
+	exist->store(true);
 }

@@ -27,7 +27,7 @@ FrameReaderListenerImpl::~FrameReaderListenerImpl() {
 
 void FrameReaderListenerImpl::on_requested_deadline_missed(::DDS::DataReader_ptr reader, const::DDS::RequestedDeadlineMissedStatus & status)
 {
-
+	std::cout << "requested_deadline_missed" << endl;
 }
 
 void FrameReaderListenerImpl::on_requested_incompatible_qos(::DDS::DataReader_ptr reader, const::DDS::RequestedIncompatibleQosStatus & status)

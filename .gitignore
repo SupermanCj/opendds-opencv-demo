@@ -1,5 +1,17 @@
 # Prerequisites
 *.d
+*.vcxproj*
+VideoType*
+VideoS.*
+VideoC.*
+*.log
+*.sln
+
+# Build Results of an ATL Project
+[Dd]ebug/
+[Rr]elease/
+.vscode/
+.vs/
 
 # Compiled Object files
 *.slo
@@ -30,3 +42,33 @@
 *.exe
 *.out
 *.app
+
+# DNX
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc

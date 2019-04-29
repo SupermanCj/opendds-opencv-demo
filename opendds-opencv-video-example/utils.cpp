@@ -7,12 +7,15 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/opencv.hpp>
 #include "utils.h"
+#ifdef linux
+#include <unistd.h>
+#endif
 
 using namespace std;
 using namespace cv;
 
 typedef unsigned char byte;
-const int scale = 16;
+const int scale = 8;
 
 byte* matToBytes(Mat image) {
 	int size = image.rows * image.cols * image.channels();
@@ -79,7 +82,18 @@ ostream& printOctetSeq(Video::OctetSeq seq) {
 		str[i] = seq[i];
 	}
 	str[seq.length()] = '\0';
-	cout << str;
+	std::cout << str;
 	delete[] str;
 	return cout;
 }
+
+void msleep(unsigned long milisecond)
+{
+#if defined _WIN32||WIN32||_WIN64||WIN64
+	Sleep(milisecond);
+#elif defined linux||_linux||__linux__
+	usleep(milisecond*1000)
+#endif
+}
+
+

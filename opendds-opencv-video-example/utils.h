@@ -19,3 +19,6 @@ Mat getMatFromFrame(Video::Frame& frame);
 
 //test
 ostream& printOctetSeq(Video::OctetSeq seq);
+
+void msleep(unsigned long milisecond);
+

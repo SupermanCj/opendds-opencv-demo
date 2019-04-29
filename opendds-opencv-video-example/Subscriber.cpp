@@ -11,6 +11,7 @@
 
 #include "FrameReaderListenerImpl.h"
 #include "VideoTypeSupportImpl.h"
+#include "utils.h"
 
 using namespace DDS;
 using namespace OpenDDS::DCPS;
@@ -94,12 +95,11 @@ int main(int argc, char *argv[]) {
 		}
 
 		Operation operation;
-		operation.operation_id = 111;
-		operation.opera_seq_num = 1;
-		operation.action = OperationAction::BACK;
+		operation.operation_id = rand();
+		operation.opera_seq_num = 0;
 
-		for (int i = 0; i < 100; i++) {
-			sleep(1);
+		for (int i = 0; i < 10; i++) {
+			msleep(1000);
 			operation.opera_seq_num = i;
 			operation_writer->write(operation, 0);
 			
@@ -172,12 +172,12 @@ DataReaderQos getDRReliableQos(Subscriber_var subscriber) {
 	subscriber->get_default_datareader_qos(dr_qos);
 	dr_qos.reliability.kind = DDS::BEST_EFFORT_RELIABILITY_QOS;
 	//dr_qos.reliability.kind = DDS::RELIABLE_RELIABILITY_QOS;
-	dr_qos.reliability.max_blocking_time.sec = 0;
+	dr_qos.reliability.max_blocking_time.sec = 1;
 	dr_qos.reliability.max_blocking_time.nanosec = 1000*1000;
 	dr_qos.history.kind = DDS::KEEP_LAST_HISTORY_QOS;
-	dr_qos.history.depth = 100;
-	dr_qos.resource_limits.max_samples = 200;
-	dr_qos.resource_limits.max_samples_per_instance = 100;
+	dr_qos.history.depth = 50;
+	dr_qos.resource_limits.max_samples = 100;
+	dr_qos.resource_limits.max_samples_per_instance = 50;
 	return dr_qos;
 }
 
