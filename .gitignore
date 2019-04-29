@@ -12,7 +12,10 @@ VideoC.*
 [Rr]elease/
 .vscode/
 .vs/
-
+GNU*
+.depend*
+client
+server
 # Compiled Object files
 *.slo
 *.lo

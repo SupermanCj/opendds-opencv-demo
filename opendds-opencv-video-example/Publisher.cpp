@@ -86,7 +86,6 @@ int main(int argc, char *argv[]) {
 		frame.frame_id = 1;
 		Mat frame_;
 
-		Duration_t timeout = { 10, 0 };
 		std::atomic_bool stop{ false };
 		int count = 0;
 		std::cout << "send!\n";
@@ -224,7 +223,8 @@ void notifyInput(std::atomic_bool* exist) {
 }
 
 void checkInput(std::atomic_bool* exist) {
-	std::cin.seekg(std::cin.end);
+	// std::cin.seekg(std::cin.end);
 	std::cin.peek();
+	std::cout<<std::cin.peek()<<std::endl;
 	exist->store(true);
 }

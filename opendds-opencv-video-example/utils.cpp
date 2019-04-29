@@ -92,7 +92,7 @@ void msleep(unsigned long milisecond)
 #if defined _WIN32||WIN32||_WIN64||WIN64
 	Sleep(milisecond);
 #elif defined linux||_linux||__linux__
-	usleep(milisecond*1000)
+	usleep(milisecond*1000);
 #endif
 }
 
