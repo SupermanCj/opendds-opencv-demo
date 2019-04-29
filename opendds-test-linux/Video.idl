@@ -1,0 +1,27 @@
+module Video {
+
+#pragma DCPS_DATA_TYPE "Video::Frame"
+#pragma DCPS_DATA_KEY "Video::Frame video_id"
+
+  typedef sequence<octet> OctetSeq;
+  struct Frame {
+    long video_id;
+    long frame_id;
+    string from;
+    OctetSeq frame_bytes;
+    long rows;
+    long cols;
+    long channels;
+  };
+
+#pragma DCPS_DATA_TYPE "Video::Operation"
+#pragma DCPS_DATA_KEY "Video::Operation operation_id"
+  enum OperationAction {
+	  FORWORD, BACK, TURN_LEFT, TURN_RIGHT
+  };
+  struct Operation {
+	  long operation_id;
+	  long opera_seq_num;
+	  OperationAction action;
+  };
+};

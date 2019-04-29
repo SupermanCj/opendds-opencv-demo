@@ -1,0 +1,61 @@
+
+project(*idl) : dcps {
+    requires += no_opendds_safety_profile
+    TypeSupport_Files {
+        Video.idl
+    }
+    custom_only = 1
+}
+
+project(*ClientNode) : dcpsexe, dcps_tcp, dcps_rtps_udp {
+    requires += no_opendds_safety_profile
+    exename   = client
+    after    += *idl
+	specific(vs2017,vc8){
+		libs	 += opencv_world346
+		libpaths += $(OPENCV_DIR)\lib
+		libout	 += $(OPENCV_DIR)\lib
+		includes += $(OPENCV_DIR)\..\..\include
+	}else{
+        libs     += opencv_core opencv_highgui opencv_videoio opencv_imgcodecs opencv_video opencv_imgproc
+        libpaths += /usr/local/lib
+        libout   += /usr/local/lib
+        includes +=/usr/local/include
+	}
+    TypeSupport_Files {
+        Video.idl
+    }
+
+    Source_Files {
+		OperationReaderListenerImpl.cpp
+        Publisher.cpp
+		utils.cpp
+    }
+}
+
+project(*ServerNode) : dcpsexe, dcps_tcp, dcps_rtps_udp {
+    requires += no_opendds_safety_profile
+    exename   = server
+    after    += *idl
+	specific(vs2017,vc8){
+		libs	 += opencv_world346
+		libpaths += $(OPENCV_DIR)\lib
+		libout	 += $(OPENCV_DIR)\lib
+		includes += $(OPENCV_DIR)\..\..\include
+	}else{
+        libs     += opencv_core opencv_highgui opencv_videoio opencv_imgcodecs opencv_video opencv_imgproc
+        libpaths += /usr/local/lib
+        libout   += /usr/local/lib
+        includes +=/usr/local/include
+	}
+
+    TypeSupport_Files {
+        Video.idl
+    }
+
+    Source_Files {
+        FrameReaderListenerImpl.cpp
+        Subscriber.cpp
+		utils.cpp
+    }
+}
