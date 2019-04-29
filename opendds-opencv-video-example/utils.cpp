@@ -15,7 +15,7 @@ using namespace std;
 using namespace cv;
 
 typedef unsigned char byte;
-const int scale = 8;
+const int scale = 4;
 
 byte* matToBytes(Mat image) {
 	int size = image.rows * image.cols * image.channels();
