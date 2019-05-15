@@ -30,7 +30,7 @@ using namespace std;
 const char* DEFAULT_TOPIC_NAME = "Video";
 const int DEFAULT_CAMERA = 0;
 const int DEFAULT_FROM = 0XFFFFFFF;
-const int DEFAULT_SEELP_MILLISECOND = 100;
+const int DEFAULT_SEELP_MILLISECOND = 30;
 
 VideoPublisher::VideoPublisher(DDS::DomainParticipant_var p)
 	:VideoPublisher(p, DEFAULT_TOPIC_NAME, DEFAULT_CAMERA){}

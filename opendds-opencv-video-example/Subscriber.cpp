@@ -26,11 +26,10 @@ int main(int argc, char *argv[]) {
 			TheParticipantFactoryWithArgs(argc, argv);
 
 		DomainParticipant_var participant = create_participant(dpf, 79);
-
-		OperationPublisher operation(participant);
-		FrameReaderListenerImpl listener(&operation);
 		
-		VideoSubscriber subscriber(participant, DDS::DataReaderListener_var(&listener));
+		OperationPublisher operation(participant);
+		DDS::DataReaderListener_var listener_var(new FrameReaderListenerImpl(&operation));
+		VideoSubscriber subscriber(participant, listener_var);
 		
 		std::cin.get();
 		std::cin.get();
