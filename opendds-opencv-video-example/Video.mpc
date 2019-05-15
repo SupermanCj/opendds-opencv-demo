@@ -54,11 +54,11 @@ project(*ServerNode) : dcpsexe, dcps_tcp, dcps_rtps_udp {
         Video.idl
     }
 
-    Source_Files {
-        FrameReaderListenerImpl.cpp
+    Source_Files {   
+        utils.cpp 
 		OperationPublisher.cpp
+        FrameReaderListenerImpl.cpp
 		VideoSubscriber.cpp
-        Subscriber.cpp
-		utils.cpp
+        Subscriber.cpp	
     }
 }

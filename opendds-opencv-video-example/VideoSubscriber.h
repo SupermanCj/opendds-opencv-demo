@@ -12,8 +12,8 @@
 
 class VideoSubscriber {
 public:
-	VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var& listener);
-	VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var& listener, const char* topicName);
+	VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var listener);
+	VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var listener, const char* topicName);
 	void clear();
 
 private:

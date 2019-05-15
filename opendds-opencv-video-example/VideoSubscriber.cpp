@@ -18,12 +18,12 @@ using namespace std;
 
 const char* DEFAULT_VIDEO_TOPIC = "Video";
 
-VideoSubscriber::VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var & listener)
+VideoSubscriber::VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var listener)
 	:VideoSubscriber(p, listener, DEFAULT_VIDEO_TOPIC)
 {
 }
 
-VideoSubscriber::VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var & _listener, const char * topicName)
+VideoSubscriber::VideoSubscriber(DDS::DomainParticipant_var p, DDS::DataReaderListener_var _listener, const char * topicName)
 	: listener(_listener)
 {
 	//	listener = _listener;

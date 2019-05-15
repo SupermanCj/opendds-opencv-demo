@@ -2,7 +2,7 @@
 
 #include <dds/DdsDcpsInfrastructureC.h>
 #include <dds/DdsDcpsSubscriptionC.h>
-
+#include <dds/DCPS/Definitions.h>
 #include <dds/DCPS/Marked_Default_Qos.h>
 #include <dds/DCPS/Service_Participant.h>
 #include <dds/DCPS/WaitSet.h>
@@ -26,11 +26,10 @@ int main(int argc, char *argv[]) {
 			TheParticipantFactoryWithArgs(argc, argv);
 
 		DomainParticipant_var participant = create_participant(dpf, 79);
-
-		OperationPublisher operation(participant);
-		FrameReaderListenerImpl listener(&operation);
 		
-		VideoSubscriber subscriber(participant, DDS::DataReaderListener_var(&listener));
+		OperationPublisher operation(participant);
+		DDS::DataReaderListener_var listener_var(new FrameReaderListenerImpl(&operation));
+		VideoSubscriber subscriber(participant, listener_var);
 		
 		std::cin.get();
 		std::cin.get();
