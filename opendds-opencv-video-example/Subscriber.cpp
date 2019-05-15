@@ -2,7 +2,7 @@
 
 #include <dds/DdsDcpsInfrastructureC.h>
 #include <dds/DdsDcpsSubscriptionC.h>
-
+#include <dds/DCPS/Definitions.h>
 #include <dds/DCPS/Marked_Default_Qos.h>
 #include <dds/DCPS/Service_Participant.h>
 #include <dds/DCPS/WaitSet.h>
