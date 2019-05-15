@@ -27,7 +27,8 @@ project(*ClientNode) : dcpsexe, dcps_tcp, dcps_rtps_udp {
     }
 
     Source_Files {
-		OperationReaderListenerImpl.cpp
+		OperationSubscriber.cpp
+		VideoPublisher.cpp
         Publisher.cpp
 		utils.cpp
     }
@@ -55,6 +56,8 @@ project(*ServerNode) : dcpsexe, dcps_tcp, dcps_rtps_udp {
 
     Source_Files {
         FrameReaderListenerImpl.cpp
+		OperationPublisher.cpp
+		VideoSubscriber.cpp
         Subscriber.cpp
 		utils.cpp
     }

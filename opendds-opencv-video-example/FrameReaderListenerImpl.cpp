@@ -10,19 +10,20 @@
 #include <opencv2/videoio.hpp>
 #include <iostream>
 #include "utils.h"
+
 using namespace cv;
 using namespace std;
+using namespace Video;
 
-void FrameReaderListenerImpl::init() {
-	if (!isInit.load())
-	{
-		namedWindow("video", WINDOW_AUTOSIZE);
-		isInit = true;
-		cout << "init" << endl;
-	}
+FrameReaderListenerImpl::FrameReaderListenerImpl(OperationPublisher* _writer)
+{
+	writer = _writer;
+	round_count.store(0);
+	cur_count.store(0);
 }
+
 FrameReaderListenerImpl::~FrameReaderListenerImpl() {
-	cout << "recv messages count:" << rec_count << endl;
+	writer->clear();
 }
 
 void FrameReaderListenerImpl::on_requested_deadline_missed(::DDS::DataReader_ptr reader, const::DDS::RequestedDeadlineMissedStatus & status)
@@ -47,9 +48,6 @@ void FrameReaderListenerImpl::on_liveliness_changed(::DDS::DataReader_ptr reader
 
 void FrameReaderListenerImpl::on_data_available(::DDS::DataReader_ptr reader)
 {
-	if (!isInit.load()) {
-		init();
-	}
 	Video::FrameDataReader_var reader_v = Video::FrameDataReader::_narrow(reader);
 	if (!reader_v) {
 		ACE_ERROR((LM_ERROR,
@@ -63,15 +61,24 @@ void FrameReaderListenerImpl::on_data_available(::DDS::DataReader_ptr reader)
 
 	DDS::ReturnCode_t error = reader_v->take_next_sample(frame, info);
 	if (error == DDS::RETCODE_OK) {
-		rec_count.fetch_add(1);
+		cur_count.fetch_add(1);
 		std::cout << "SampleInfo.sample_rank = " << info.sample_rank << std::endl;
 		std::cout << "SampleInfo.instance_state = " << info.instance_state << std::endl;
 		std::cout << "instance_handle = " << info.instance_handle << std::endl;
 		if (info.valid_data) {
 			std::cout << "frame_id		= " << frame.frame_id << std::endl
 				<< "from			= " << frame.from << std::endl;
-			imshow("video", getMatFromFrame(frame));
+			imshow(frame.from.in(), getMatFromFrame(frame));
 			waitKey(5);
+		}
+		if (cur_count == 10) {
+			round_count.fetch_add(1);
+			cur_count.store(0);
+			Operation operation;
+			operation.operations_id = frame.video_id;
+			operation.opera_seq_num = round_count * 10 + cur_count;
+			operation.action = rand();
+			writer->publishOperation(operation);
 		}
 	}else {
 		ACE_ERROR((LM_ERROR,
@@ -82,7 +89,7 @@ void FrameReaderListenerImpl::on_data_available(::DDS::DataReader_ptr reader)
 
 void FrameReaderListenerImpl::on_subscription_matched(::DDS::DataReader_ptr reader, const::DDS::SubscriptionMatchedStatus & status)
 {
-	std::cout << "match!" << endl;
+	std::cout << "match or dismatch!" << endl;
 }
 
 void FrameReaderListenerImpl::on_sample_lost(::DDS::DataReader_ptr reader, const::DDS::SampleLostStatus & status)

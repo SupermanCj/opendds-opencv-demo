@@ -15,13 +15,11 @@ module Video {
   };
 
 #pragma DCPS_DATA_TYPE "Video::Operation"
-#pragma DCPS_DATA_KEY "Video::Operation operation_id"
-  enum OperationAction {
-	  FORWORD, BACK, TURN_LEFT, TURN_RIGHT
-  };
+#pragma DCPS_DATA_KEY "Video::Operation operations_id"
+
   struct Operation {
-	  long operation_id;
+	  long operations_id;
 	  long opera_seq_num;
-	  OperationAction action;
+	  long action;
   };
 };

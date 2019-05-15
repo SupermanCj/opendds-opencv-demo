@@ -4,17 +4,16 @@
 #include <dds/DdsDcpsSubscriptionC.h>
 #include <dds/DCPS/LocalObject.h>
 #include <dds/DCPS/Definitions.h>
+#include "OperationPublisher.h"
 #include <atomic>
 
 class FrameReaderListenerImpl
 	: public virtual OpenDDS::DCPS::LocalObject<DDS::DataReaderListener> {
 public:
-	std::atomic_int rec_count{0};
-
-	void init();
+	FrameReaderListenerImpl(OperationPublisher*);
 
 	~FrameReaderListenerImpl();
-	// ͨ�� LocalObject �̳�
+
 	virtual void on_requested_deadline_missed(::DDS::DataReader_ptr reader, const::DDS::RequestedDeadlineMissedStatus & status) override;
 
 	virtual void on_requested_incompatible_qos(::DDS::DataReader_ptr reader, const::DDS::RequestedIncompatibleQosStatus & status) override;
@@ -29,5 +28,7 @@ public:
 
 	virtual void on_sample_lost(::DDS::DataReader_ptr reader, const::DDS::SampleLostStatus & status) override;
 private:
-		std::atomic_bool isInit{false};
+	OperationPublisher* writer;
+	std::atomic_int round_count;
+	std::atomic_int cur_count;
 };
