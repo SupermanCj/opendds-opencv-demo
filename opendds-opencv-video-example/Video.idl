@@ -18,7 +18,7 @@ module Video {
 #pragma DCPS_DATA_KEY "Video::Operation operations_id"
 
   struct Operation {
-	  long to;
+	  long operations_id;
 	  long opera_seq_num;
 	  long action;
   };
